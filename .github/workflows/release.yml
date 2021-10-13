@@ -16,6 +16,7 @@ jobs:
     - uses: jvsrikanth040/secrets-sync-action@master
       with: 
         ref: 'master'
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         
     - name: Keep dist up-to-date
       run: |
@@ -32,11 +33,13 @@ jobs:
       uses: jvsrikanth040/secrets-sync-action@master
       with: 
         ref: 'master'
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         
     - name: Checkout jvsrikanth040/repo-secrets-confirgurer
       uses: actions/checkout@v2
       with:
         ref: master
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     
     - name: Push repository secrets
       uses: ./
