@@ -14,8 +14,6 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
     - uses: jvsrikanth040/secrets-sync-action@master
-      with: 
-        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         
     - name: Keep dist up-to-date
       run: |
