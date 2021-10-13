@@ -1,0 +1,69 @@
+name: "Push secrets to repository"
+on:   
+  workflow_dispatch:
+    inputs:
+      environment: 
+        description: 'Environment (dev, stage, prod)'
+        required: false
+      repository:
+        description: 'Repository (scrs-*)'     
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+    - uses: google/secrets-sync-action@v2
+      with: 
+        ref: 'master'
+        
+    - uses: actions/checkout@v2
+      with: 
+        ref: 'master'
+        
+    - name: Keep dist up-to-date
+      run: |
+        npm i
+        npm run build
+        npm run pack
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add dist/index.js
+        git commit -m "chore: publish dist" || echo "nothing to commit"
+        git push origin master
+        
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: master
+    
+    - name: Push repository secrets
+      uses: ./
+      with: 
+        REPOSITORIES_LIST_REGEX: false
+        SECRETS: |
+          ^ARTIFACTORY_KEY$
+        REPOSITORIES: |
+          ^jvsrikanth040/${{ github.event.inputs.repository }}$
+        DRY_RUN: false
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      env:
+        ARTIFACTORY_KEY: ${{ secrets.ARTIFACTORY_KEY }}
+        
+    - name: Push environment secrets
+      if: github.event.inputs.environment != '' &&  (github.event.inputs.environment == 'dev' || github.event.inputs.environment == 'prod' || github.event.inputs.environment == 'stage')
+      uses: ./
+      with:
+        REPOSITORIES_LIST_REGEX: false
+        SECRETS: |
+          COSMOS_DB
+          KUBE_CONFIG
+        REPOSITORIES: |
+          jvsrikanth040/${{ github.event.inputs.repository }}
+        DRY_RUN: false
+        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+        ENVIRONMENT: ${{ github.event.inputs.environment }}
+      env:
+        COSMOS_DB: ${{ secrets.COSMOS_DB }}
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        
