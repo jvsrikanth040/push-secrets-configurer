@@ -16,11 +16,9 @@ jobs:
         
     - name: Checkout jvsrikanth040/repo-secrets-confirgurer
       uses: actions/checkout@v2
-      with:
-        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
     
     - name: Push repository secrets
-      uses: ./
+      uses: actions/checkout@v2
       with: 
         REPOSITORIES_LIST_REGEX: false
         SECRETS: |
