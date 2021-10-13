@@ -27,9 +27,9 @@ jobs:
       with: 
         REPOSITORIES_LIST_REGEX: false
         SECRETS: |
-          ^ARTIFACTORY_KEY$
+          ARTIFACTORY_KEY
         REPOSITORIES: |
-          ^jvsrikanth040/${{ github.event.inputs.repository }}$
+          jvsrikanth040/${{ github.event.inputs.repository }}
         DRY_RUN: false
         GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
       env:
