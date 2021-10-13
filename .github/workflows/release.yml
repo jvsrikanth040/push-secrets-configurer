@@ -16,9 +16,14 @@ jobs:
         
     - name: Checkout jvsrikanth040/repo-secrets-confirgurer
       uses: actions/checkout@v2
+      
+    - name: Checkout jvsrikanth040/secrets-sync-action
+      uses: actions/checkout@v2
+      with:
+        repository: jvsrikanth040/secrets-sync-action
     
     - name: Push repository secrets
-      uses: actions/checkout@v2
+      uses: ./
       with: 
         REPOSITORIES_LIST_REGEX: false
         SECRETS: |
