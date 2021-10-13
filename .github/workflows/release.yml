@@ -13,23 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     steps:
-    - uses: jvsrikanth040/secrets-sync-action@master
-        
-    - name: Keep dist up-to-date
-      run: |
-        npm i
-        npm run build
-        npm run pack
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add dist/index.js
-        git commit -m "chore: publish dist" || echo "nothing to commit"
-        git push origin master
-    
-    - name: Checkout google/secrets-sync-action
-      uses: jvsrikanth040/secrets-sync-action@master
-      with: 
-        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         
     - name: Checkout jvsrikanth040/repo-secrets-confirgurer
       uses: actions/checkout@v2
