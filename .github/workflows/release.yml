@@ -13,11 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
     steps:
-    - uses: google/secrets-sync-action@v2
-      with: 
-        ref: 'master'
-        
-    - uses: actions/checkout@v2
+    - uses: google/secrets-sync-action
       with: 
         ref: 'master'
         
@@ -31,8 +27,13 @@ jobs:
         git add dist/index.js
         git commit -m "chore: publish dist" || echo "nothing to commit"
         git push origin master
+    
+    - name: Checkout google/secrets-sync-action
+      uses: google/secrets-sync-action
+      with: 
+        ref: 'master'
         
-    - name: Checkout
+    - name: Checkout jvsrikanth040/repo-secrets-confirgurer
       uses: actions/checkout@v2
       with:
         ref: master
