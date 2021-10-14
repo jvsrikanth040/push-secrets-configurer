@@ -1,1 +1,1 @@
-# push-secrets-configurer
+# secrets-configurer
