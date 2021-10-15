@@ -21,7 +21,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: jvsrikanth040/secrets-sync-action
-        ref: main
     
     - name: Push repository secrets
       uses: ./
